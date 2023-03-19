@@ -1,5 +1,6 @@
 package edu.up.cs301.game.util;
 
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -34,8 +35,8 @@ public class IPCoder {
 				for (Enumeration<InetAddress> enumIpAddr = intf
 						.getInetAddresses(); enumIpAddr.hasMoreElements();) {
 					InetAddress inetAddress = enumIpAddr.nextElement();
-					if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress()) {
-						return inetAddress.getHostAddress().toString();
+					if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && (inetAddress instanceof Inet4Address)) {
+						return inetAddress.getHostAddress();
 					}
 				}
 			}
