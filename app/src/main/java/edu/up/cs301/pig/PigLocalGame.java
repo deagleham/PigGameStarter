@@ -17,11 +17,13 @@ import android.util.Log;
  */
 public class PigLocalGame extends LocalGame {
 
+    PigGameState game;
+
     /**
      * This ctor creates a new game state
      */
     public PigLocalGame() {
-        //TODO  You will implement this constructor
+        game = new PigGameState();
     }
 
     /**
@@ -29,7 +31,9 @@ public class PigLocalGame extends LocalGame {
      */
     @Override
     protected boolean canMove(int playerIdx) {
-        //TODO  You will implement this method
+        if(game.getTurnID() == playerIdx){
+            return true;
+        }
         return false;
     }
 
@@ -40,7 +44,40 @@ public class PigLocalGame extends LocalGame {
      */
     @Override
     protected boolean makeMove(GameAction action) {
-        //TODO  You will implement this method
+        if(action instanceof PigHoldAction){
+            int score;
+            if(game.getTurnID() == 0){
+                score = game.getP0Score() + game.getRunningTotal();
+                game.setRunningTotal(0);
+                game.setP0Score(score);
+                game.setTurnID(1);
+            }
+            else if(game.getTurnID() == 1){
+                score = game.getP1Score() + game.getRunningTotal();
+                game.setRunningTotal(0);
+                game.setP1Score(score);
+                game.setTurnID(0);
+            }
+            return true;
+        }
+        else if(action instanceof PigRollAction){
+            int roll = (int) (1 + Math.random()*6);
+            int total;
+            if(roll != 1){
+                total = roll + game.getRunningTotal();
+                game.setRunningTotal(total);
+            }
+            else{
+                game.setRunningTotal(0);
+                if(game.getTurnID() == 1){
+                    game.setTurnID(0);
+                }
+                else{
+                    game.setTurnID(1);
+                }
+            }
+            return true;
+        }
         return false;
     }//makeMove
 
@@ -49,7 +86,7 @@ public class PigLocalGame extends LocalGame {
      */
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {
-        //TODO  You will implement this method
+        p.sendInfo(new PigGameState(game));
     }//sendUpdatedSate
 
     /**
@@ -61,7 +98,7 @@ public class PigLocalGame extends LocalGame {
      */
     @Override
     protected String checkIfGameOver() {
-        //TODO  You will implement this method
+
         return null;
     }
 

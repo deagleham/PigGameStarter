@@ -27,7 +27,7 @@ public class PigGameState extends GameState {
 
     public int getTurnID(){
         return turnID;
-    }
+    }//0 or 1
 
     public int getP0Score(){
         return P0Score;
