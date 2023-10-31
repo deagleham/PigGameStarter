@@ -17,7 +17,7 @@ import android.util.Log;
  */
 public class PigLocalGame extends LocalGame {
 
-    PigGameState game;
+    private PigGameState game;
 
     /**
      * This ctor creates a new game state
@@ -48,15 +48,21 @@ public class PigLocalGame extends LocalGame {
             int score;
             if(game.getTurnID() == 0){
                 score = game.getP0Score() + game.getRunningTotal();
-                game.setRunningTotal(0);
                 game.setP0Score(score);
-                game.setTurnID(1);
             }
             else if(game.getTurnID() == 1){
                 score = game.getP1Score() + game.getRunningTotal();
-                game.setRunningTotal(0);
+
                 game.setP1Score(score);
-                game.setTurnID(0);
+            }
+            game.setRunningTotal(0);
+            if(playerNames.length > 1){
+                if(game.getTurnID() == 0){
+                    game.setTurnID(1);
+                }
+                else{
+                    game.setTurnID(0);
+                }
             }
             return true;
         }
@@ -69,11 +75,12 @@ public class PigLocalGame extends LocalGame {
             }
             else{
                 game.setRunningTotal(0);
-                if(game.getTurnID() == 1){
-                    game.setTurnID(0);
-                }
-                else{
-                    game.setTurnID(1);
+                if(playerNames.length > 1) {
+                    if (game.getTurnID() == 1) {
+                        game.setTurnID(0);
+                    } else {
+                        game.setTurnID(1);
+                    }
                 }
             }
             return true;
@@ -98,7 +105,12 @@ public class PigLocalGame extends LocalGame {
      */
     @Override
     protected String checkIfGameOver() {
-
+        if(game.getP0Score() >= 50){
+            return "Player 0 wins with a score of " + game.getP0Score();
+        }
+        else if(game.getP1Score() >= 50){
+            return "Player 1 wins with a score of " + game.getP1Score();
+        }
         return null;
     }
 

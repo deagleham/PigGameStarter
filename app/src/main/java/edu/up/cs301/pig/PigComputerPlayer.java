@@ -1,6 +1,7 @@
 package edu.up.cs301.pig;
 
 import edu.up.cs301.game.GameComputerPlayer;
+import edu.up.cs301.game.GamePlayer;
 import edu.up.cs301.game.actionMsg.GameAction;
 import edu.up.cs301.game.infoMsg.GameInfo;
 import edu.up.cs301.game.util.Tickable;
@@ -12,6 +13,8 @@ import edu.up.cs301.game.util.Tickable;
  * @version August 2015
  */
 public class PigComputerPlayer extends GameComputerPlayer {
+
+    private PigGameState gameState;
 
     /**
      * ctor does nothing extra
@@ -28,7 +31,16 @@ public class PigComputerPlayer extends GameComputerPlayer {
      */
     @Override
     protected void receiveInfo(GameInfo info) {
-        // TODO  You will implement this method
+        gameState = (PigGameState) info;
+        if(gameState.getTurnID() == this.playerNum){
+            int rand = (int) (Math.random()*2);
+            if(rand == 0){
+                game.sendAction(new PigHoldAction(this));
+            }
+            else if(rand == 1){
+                game.sendAction(new PigRollAction(this));
+            }
+        }
     }//receiveInfo
 
 }
