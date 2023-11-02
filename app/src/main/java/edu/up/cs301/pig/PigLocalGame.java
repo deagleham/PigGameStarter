@@ -70,10 +70,12 @@ public class PigLocalGame extends LocalGame {
             int roll = (int) (1 + Math.random()*6);
             int total;
             if(roll != 1){
+                game.setDieValue(roll);
                 total = roll + game.getRunningTotal();
                 game.setRunningTotal(total);
             }
             else{
+                game.setDieValue(roll);
                 game.setRunningTotal(0);
                 if(playerNames.length > 1) {
                     if (game.getTurnID() == 1) {
